@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f3e4ce5aeff24a6dbeafd7cd88d9b700" Name="Diagram1">
+        <EntityTypeShape EntityType="inventoryBaseModel.activeInventory" Width="1.5" PointX="5.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.application" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.inverters" Width="1.5" PointX="8.25" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.panels" Width="1.5" PointX="5.25" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.passiveInventory" Width="1.5" PointX="5.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.postCodes" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.productCatalog" Width="1.5" PointX="3" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.statistics" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.suppliers" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.technical" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="inventoryBaseModel.users" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="inventoryBaseModel.fk_product_actinv" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_supplier_actinv" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_productCatalog_prodNo" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_supplier_inverters" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_productCatatlog_prodNo" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_supplier_panels" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_product_passinv" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_supplier_passinv" ManuallyRouted="false" />
+        <AssociationConnector Association="inventoryBaseModel.fk_supplier_procat" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

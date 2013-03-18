@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LagerMan_v2.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="logSource" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">LagerMan</Value>
+    </Setting>
+    <Setting Name="eventlog" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Application</Value>
+    </Setting>
+    <Setting Name="SP_StartRow" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">16</Value>
+    </Setting>
+    <Setting Name="SP_cNameCol" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="SP_cNameRow" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="SP_mfgBy" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Sunpower</Value>
+    </Setting>
+    <Setting Name="panelProdGrp" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="inverterProdGrp" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="panelsTable" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">panels</Value>
+    </Setting>
+    <Setting Name="invertersTable" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">inverters</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

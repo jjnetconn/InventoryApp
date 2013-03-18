@@ -1,0 +1,687 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="inventoryBaseModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="inventoryBaseModelStoreContainer">
+          <EntitySet Name="activeInventory" EntityType="inventoryBaseModel.Store.activeInventory" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="application" EntityType="inventoryBaseModel.Store.application" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="inverters" EntityType="inventoryBaseModel.Store.inverters" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="panels" EntityType="inventoryBaseModel.Store.panels" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="passiveInventory" EntityType="inventoryBaseModel.Store.passiveInventory" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="postCodes" EntityType="inventoryBaseModel.Store.postCodes" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="productCatalog" EntityType="inventoryBaseModel.Store.productCatalog" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="statistics" EntityType="inventoryBaseModel.Store.statistics" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="suppliers" EntityType="inventoryBaseModel.Store.suppliers" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="technical" EntityType="inventoryBaseModel.Store.technical" store:Type="Tables" Schema="inventoryBase" />
+          <EntitySet Name="users" EntityType="inventoryBaseModel.Store.users" store:Type="Tables" Schema="inventoryBase" />
+          <AssociationSet Name="fk_product_actinv" Association="inventoryBaseModel.Store.fk_product_actinv">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="activeInventory" EntitySet="activeInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_product_passinv" Association="inventoryBaseModel.Store.fk_product_passinv">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="passiveInventory" EntitySet="passiveInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_productCatalog_prodNo" Association="inventoryBaseModel.Store.fk_productCatalog_prodNo">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="inverters" EntitySet="inverters" />
+          </AssociationSet>
+          <AssociationSet Name="fk_productCatatlog_prodNo" Association="inventoryBaseModel.Store.fk_productCatatlog_prodNo">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="panels" EntitySet="panels" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_actinv" Association="inventoryBaseModel.Store.fk_supplier_actinv">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="activeInventory" EntitySet="activeInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_inverters" Association="inventoryBaseModel.Store.fk_supplier_inverters">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="inverters" EntitySet="inverters" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_panels" Association="inventoryBaseModel.Store.fk_supplier_panels">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="panels" EntitySet="panels" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_passinv" Association="inventoryBaseModel.Store.fk_supplier_passinv">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="passiveInventory" EntitySet="passiveInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_procat" Association="inventoryBaseModel.Store.fk_supplier_procat">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="productCatalog" EntitySet="productCatalog" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="activeInventory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="supplierNo" Type="int" Nullable="false" />
+          <Property Name="productNo" Type="int" />
+          <Property Name="serialNo" Type="varchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="application">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="inverters">
+          <Key>
+            <PropertyRef Name="invSerial" />
+          </Key>
+          <Property Name="invSerial" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="intPart-item" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="invHwVer" Type="varchar" MaxLength="45" />
+          <Property Name="invSwVer" Type="varchar" MaxLength="45" />
+          <Property Name="invSupplier" Type="int" Nullable="false" />
+          <Property Name="prodNo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="panels">
+          <Key>
+            <PropertyRef Name="panelSerial" />
+          </Key>
+          <Property Name="panelSerial" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="panelCname" Type="varchar" MaxLength="45" />
+          <Property Name="panelSupplier" Type="int" Nullable="false" />
+          <Property Name="panelMFGDate" Type="datetime" />
+          <Property Name="panelCellclass" Type="double" />
+          <Property Name="panelEff" Type="double" />
+          <Property Name="panelFf" Type="double" />
+          <Property Name="panelVmp" Type="double" />
+          <Property Name="panelVoc" Type="double" />
+          <Property Name="panelImp" Type="double" />
+          <Property Name="panelIsc" Type="double" />
+          <Property Name="panelPmpp" Type="double" />
+          <Property Name="prodNo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="passiveInventory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="supplier" Type="int" Nullable="false" />
+          <Property Name="product" Type="int" />
+        </EntityType>
+        <EntityType Name="postCodes">
+          <Key>
+            <PropertyRef Name="postCode" />
+          </Key>
+          <Property Name="postCode" Type="int" Nullable="false" />
+          <Property Name="cityName" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="productCatalog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="supplier" Type="int" Nullable="false" />
+          <Property Name="prCname" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="prActive" Type="bool" Nullable="false" />
+          <Property Name="prNumber" Type="int" />
+          <Property Name="prGroup" Type="int" />
+          <Property Name="prShortName" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="statistics">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="suppliers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="importReg" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="technical">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="usrLvl" Type="varchar" MaxLength="45" />
+          <Property Name="usrName" Type="varchar" MaxLength="45" />
+          <Property Name="name" Type="varchar" MaxLength="45" />
+          <Property Name="email" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <Association Name="fk_product_actinv">
+          <End Role="productCatalog" Type="inventoryBaseModel.Store.productCatalog" Multiplicity="0..1" />
+          <End Role="activeInventory" Type="inventoryBaseModel.Store.activeInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="activeInventory">
+              <PropertyRef Name="productNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_product_passinv">
+          <End Role="productCatalog" Type="inventoryBaseModel.Store.productCatalog" Multiplicity="0..1" />
+          <End Role="passiveInventory" Type="inventoryBaseModel.Store.passiveInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="passiveInventory">
+              <PropertyRef Name="product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_productCatalog_prodNo">
+          <End Role="productCatalog" Type="inventoryBaseModel.Store.productCatalog" Multiplicity="1" />
+          <End Role="inverters" Type="inventoryBaseModel.Store.inverters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="inverters">
+              <PropertyRef Name="prodNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_productCatatlog_prodNo">
+          <End Role="productCatalog" Type="inventoryBaseModel.Store.productCatalog" Multiplicity="1" />
+          <End Role="panels" Type="inventoryBaseModel.Store.panels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="panels">
+              <PropertyRef Name="prodNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_actinv">
+          <End Role="suppliers" Type="inventoryBaseModel.Store.suppliers" Multiplicity="1" />
+          <End Role="activeInventory" Type="inventoryBaseModel.Store.activeInventory" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="activeInventory">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_inverters">
+          <End Role="suppliers" Type="inventoryBaseModel.Store.suppliers" Multiplicity="1" />
+          <End Role="inverters" Type="inventoryBaseModel.Store.inverters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="inverters">
+              <PropertyRef Name="invSupplier" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_panels">
+          <End Role="suppliers" Type="inventoryBaseModel.Store.suppliers" Multiplicity="1" />
+          <End Role="panels" Type="inventoryBaseModel.Store.panels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="panels">
+              <PropertyRef Name="panelSupplier" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_passinv">
+          <End Role="suppliers" Type="inventoryBaseModel.Store.suppliers" Multiplicity="1" />
+          <End Role="passiveInventory" Type="inventoryBaseModel.Store.passiveInventory" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="passiveInventory">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_procat">
+          <End Role="suppliers" Type="inventoryBaseModel.Store.suppliers" Multiplicity="1" />
+          <End Role="productCatalog" Type="inventoryBaseModel.Store.productCatalog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="productCatalog">
+              <PropertyRef Name="supplier" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="inventoryBaseModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="inventoryBaseEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="activeInventory" EntityType="inventoryBaseModel.activeInventory" />
+          <EntitySet Name="application" EntityType="inventoryBaseModel.application" />
+          <EntitySet Name="inverters" EntityType="inventoryBaseModel.inverters" />
+          <EntitySet Name="panels" EntityType="inventoryBaseModel.panels" />
+          <EntitySet Name="passiveInventory" EntityType="inventoryBaseModel.passiveInventory" />
+          <EntitySet Name="postCodes" EntityType="inventoryBaseModel.postCodes" />
+          <EntitySet Name="productCatalog" EntityType="inventoryBaseModel.productCatalog" />
+          <EntitySet Name="statistics" EntityType="inventoryBaseModel.statistics" />
+          <EntitySet Name="suppliers" EntityType="inventoryBaseModel.suppliers" />
+          <EntitySet Name="technical" EntityType="inventoryBaseModel.technical" />
+          <EntitySet Name="users" EntityType="inventoryBaseModel.users" />
+          <AssociationSet Name="fk_product_actinv" Association="inventoryBaseModel.fk_product_actinv">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="activeInventory" EntitySet="activeInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_actinv" Association="inventoryBaseModel.fk_supplier_actinv">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="activeInventory" EntitySet="activeInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_productCatalog_prodNo" Association="inventoryBaseModel.fk_productCatalog_prodNo">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="inverters" EntitySet="inverters" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_inverters" Association="inventoryBaseModel.fk_supplier_inverters">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="inverters" EntitySet="inverters" />
+          </AssociationSet>
+          <AssociationSet Name="fk_productCatatlog_prodNo" Association="inventoryBaseModel.fk_productCatatlog_prodNo">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="panels" EntitySet="panels" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_panels" Association="inventoryBaseModel.fk_supplier_panels">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="panels" EntitySet="panels" />
+          </AssociationSet>
+          <AssociationSet Name="fk_product_passinv" Association="inventoryBaseModel.fk_product_passinv">
+            <End Role="productCatalog" EntitySet="productCatalog" />
+            <End Role="passiveInventory" EntitySet="passiveInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_passinv" Association="inventoryBaseModel.fk_supplier_passinv">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="passiveInventory" EntitySet="passiveInventory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_supplier_procat" Association="inventoryBaseModel.fk_supplier_procat">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="productCatalog" EntitySet="productCatalog" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="activeInventory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="supplierNo" Type="Int32" Nullable="false" />
+          <Property Name="productNo" Type="Int32" />
+          <Property Name="serialNo" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="productCatalog" Relationship="inventoryBaseModel.fk_product_actinv" FromRole="activeInventory" ToRole="productCatalog" />
+          <NavigationProperty Name="suppliers" Relationship="inventoryBaseModel.fk_supplier_actinv" FromRole="activeInventory" ToRole="suppliers" />
+        </EntityType>
+        <EntityType Name="application">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="inverters">
+          <Key>
+            <PropertyRef Name="invSerial" />
+          </Key>
+          <Property Name="invSerial" Type="String" Nullable="false" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="intPart_item" Type="String" Nullable="false" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="invHwVer" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="invSwVer" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="invSupplier" Type="Int32" Nullable="false" />
+          <Property Name="prodNo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="productCatalog" Relationship="inventoryBaseModel.fk_productCatalog_prodNo" FromRole="inverters" ToRole="productCatalog" />
+          <NavigationProperty Name="suppliers" Relationship="inventoryBaseModel.fk_supplier_inverters" FromRole="inverters" ToRole="suppliers" />
+        </EntityType>
+        <EntityType Name="panels">
+          <Key>
+            <PropertyRef Name="panelSerial" />
+          </Key>
+          <Property Name="panelSerial" Type="String" Nullable="false" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="panelCname" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="panelSupplier" Type="Int32" Nullable="false" />
+          <Property Name="panelMFGDate" Type="DateTime" />
+          <Property Name="panelCellclass" Type="Double" />
+          <Property Name="panelEff" Type="Double" />
+          <Property Name="panelFf" Type="Double" />
+          <Property Name="panelVmp" Type="Double" />
+          <Property Name="panelVoc" Type="Double" />
+          <Property Name="panelImp" Type="Double" />
+          <Property Name="panelIsc" Type="Double" />
+          <Property Name="panelPmpp" Type="Double" />
+          <Property Name="prodNo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="productCatalog" Relationship="inventoryBaseModel.fk_productCatatlog_prodNo" FromRole="panels" ToRole="productCatalog" />
+          <NavigationProperty Name="suppliers" Relationship="inventoryBaseModel.fk_supplier_panels" FromRole="panels" ToRole="suppliers" />
+        </EntityType>
+        <EntityType Name="passiveInventory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="supplier" Type="Int32" Nullable="false" />
+          <Property Name="product" Type="Int32" />
+          <NavigationProperty Name="productCatalog" Relationship="inventoryBaseModel.fk_product_passinv" FromRole="passiveInventory" ToRole="productCatalog" />
+          <NavigationProperty Name="suppliers" Relationship="inventoryBaseModel.fk_supplier_passinv" FromRole="passiveInventory" ToRole="suppliers" />
+        </EntityType>
+        <EntityType Name="postCodes">
+          <Key>
+            <PropertyRef Name="postCode" />
+          </Key>
+          <Property Name="postCode" Type="Int32" Nullable="false" />
+          <Property Name="cityName" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="productCatalog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="supplier" Type="Int32" Nullable="false" />
+          <Property Name="prCname" Type="String" Nullable="false" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="prActive" Type="Boolean" Nullable="false" />
+          <Property Name="prNumber" Type="Int32" />
+          <Property Name="prGroup" Type="Int32" />
+          <Property Name="prShortName" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="activeInventory" Relationship="inventoryBaseModel.fk_product_actinv" FromRole="productCatalog" ToRole="activeInventory" />
+          <NavigationProperty Name="inverters" Relationship="inventoryBaseModel.fk_productCatalog_prodNo" FromRole="productCatalog" ToRole="inverters" />
+          <NavigationProperty Name="panels" Relationship="inventoryBaseModel.fk_productCatatlog_prodNo" FromRole="productCatalog" ToRole="panels" />
+          <NavigationProperty Name="passiveInventory" Relationship="inventoryBaseModel.fk_product_passinv" FromRole="productCatalog" ToRole="passiveInventory" />
+          <NavigationProperty Name="suppliers" Relationship="inventoryBaseModel.fk_supplier_procat" FromRole="productCatalog" ToRole="suppliers" />
+        </EntityType>
+        <EntityType Name="statistics">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="suppliers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="importReg" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="activeInventory" Relationship="inventoryBaseModel.fk_supplier_actinv" FromRole="suppliers" ToRole="activeInventory" />
+          <NavigationProperty Name="inverters" Relationship="inventoryBaseModel.fk_supplier_inverters" FromRole="suppliers" ToRole="inverters" />
+          <NavigationProperty Name="panels" Relationship="inventoryBaseModel.fk_supplier_panels" FromRole="suppliers" ToRole="panels" />
+          <NavigationProperty Name="passiveInventory" Relationship="inventoryBaseModel.fk_supplier_passinv" FromRole="suppliers" ToRole="passiveInventory" />
+          <NavigationProperty Name="productCatalog" Relationship="inventoryBaseModel.fk_supplier_procat" FromRole="suppliers" ToRole="productCatalog" />
+        </EntityType>
+        <EntityType Name="technical">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="usrLvl" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="usrName" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="name" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+          <Property Name="email" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <Association Name="fk_product_actinv">
+          <End Role="productCatalog" Type="inventoryBaseModel.productCatalog" Multiplicity="0..1" />
+          <End Role="activeInventory" Type="inventoryBaseModel.activeInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="activeInventory">
+              <PropertyRef Name="productNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_actinv">
+          <End Role="suppliers" Type="inventoryBaseModel.suppliers" Multiplicity="1" />
+          <End Role="activeInventory" Type="inventoryBaseModel.activeInventory" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="activeInventory">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_productCatalog_prodNo">
+          <End Role="productCatalog" Type="inventoryBaseModel.productCatalog" Multiplicity="1" />
+          <End Role="inverters" Type="inventoryBaseModel.inverters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="inverters">
+              <PropertyRef Name="prodNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_inverters">
+          <End Role="suppliers" Type="inventoryBaseModel.suppliers" Multiplicity="1" />
+          <End Role="inverters" Type="inventoryBaseModel.inverters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="inverters">
+              <PropertyRef Name="invSupplier" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_productCatatlog_prodNo">
+          <End Role="productCatalog" Type="inventoryBaseModel.productCatalog" Multiplicity="1" />
+          <End Role="panels" Type="inventoryBaseModel.panels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="panels">
+              <PropertyRef Name="prodNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_panels">
+          <End Role="suppliers" Type="inventoryBaseModel.suppliers" Multiplicity="1" />
+          <End Role="panels" Type="inventoryBaseModel.panels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="panels">
+              <PropertyRef Name="panelSupplier" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_product_passinv">
+          <End Role="productCatalog" Type="inventoryBaseModel.productCatalog" Multiplicity="0..1" />
+          <End Role="passiveInventory" Type="inventoryBaseModel.passiveInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productCatalog">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="passiveInventory">
+              <PropertyRef Name="product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_passinv">
+          <End Role="suppliers" Type="inventoryBaseModel.suppliers" Multiplicity="1" />
+          <End Role="passiveInventory" Type="inventoryBaseModel.passiveInventory" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="passiveInventory">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_supplier_procat">
+          <End Role="suppliers" Type="inventoryBaseModel.suppliers" Multiplicity="1" />
+          <End Role="productCatalog" Type="inventoryBaseModel.productCatalog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="productCatalog">
+              <PropertyRef Name="supplier" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="inventoryBaseModelStoreContainer" CdmEntityContainer="inventoryBaseEntities">
+          <EntitySetMapping Name="activeInventory">
+            <EntityTypeMapping TypeName="inventoryBaseModel.activeInventory">
+              <MappingFragment StoreEntitySet="activeInventory">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="supplierNo" ColumnName="supplierNo" />
+                <ScalarProperty Name="productNo" ColumnName="productNo" />
+                <ScalarProperty Name="serialNo" ColumnName="serialNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="application">
+            <EntityTypeMapping TypeName="inventoryBaseModel.application">
+              <MappingFragment StoreEntitySet="application">
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="inverters">
+            <EntityTypeMapping TypeName="inventoryBaseModel.inverters">
+              <MappingFragment StoreEntitySet="inverters">
+                <ScalarProperty Name="invSerial" ColumnName="invSerial" />
+                <ScalarProperty Name="intPart_item" ColumnName="intPart-item" />
+                <ScalarProperty Name="invHwVer" ColumnName="invHwVer" />
+                <ScalarProperty Name="invSwVer" ColumnName="invSwVer" />
+                <ScalarProperty Name="invSupplier" ColumnName="invSupplier" />
+                <ScalarProperty Name="prodNo" ColumnName="prodNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="panels">
+            <EntityTypeMapping TypeName="inventoryBaseModel.panels">
+              <MappingFragment StoreEntitySet="panels">
+                <ScalarProperty Name="panelSerial" ColumnName="panelSerial" />
+                <ScalarProperty Name="panelCname" ColumnName="panelCname" />
+                <ScalarProperty Name="panelSupplier" ColumnName="panelSupplier" />
+                <ScalarProperty Name="panelMFGDate" ColumnName="panelMFGDate" />
+                <ScalarProperty Name="panelCellclass" ColumnName="panelCellclass" />
+                <ScalarProperty Name="panelEff" ColumnName="panelEff" />
+                <ScalarProperty Name="panelFf" ColumnName="panelFf" />
+                <ScalarProperty Name="panelVmp" ColumnName="panelVmp" />
+                <ScalarProperty Name="panelVoc" ColumnName="panelVoc" />
+                <ScalarProperty Name="panelImp" ColumnName="panelImp" />
+                <ScalarProperty Name="panelIsc" ColumnName="panelIsc" />
+                <ScalarProperty Name="panelPmpp" ColumnName="panelPmpp" />
+                <ScalarProperty Name="prodNo" ColumnName="prodNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="passiveInventory">
+            <EntityTypeMapping TypeName="inventoryBaseModel.passiveInventory">
+              <MappingFragment StoreEntitySet="passiveInventory">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="supplier" ColumnName="supplier" />
+                <ScalarProperty Name="product" ColumnName="product" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="postCodes">
+            <EntityTypeMapping TypeName="inventoryBaseModel.postCodes">
+              <MappingFragment StoreEntitySet="postCodes">
+                <ScalarProperty Name="postCode" ColumnName="postCode" />
+                <ScalarProperty Name="cityName" ColumnName="cityName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productCatalog">
+            <EntityTypeMapping TypeName="inventoryBaseModel.productCatalog">
+              <MappingFragment StoreEntitySet="productCatalog">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="supplier" ColumnName="supplier" />
+                <ScalarProperty Name="prCname" ColumnName="prCname" />
+                <ScalarProperty Name="prActive" ColumnName="prActive" />
+                <ScalarProperty Name="prNumber" ColumnName="prNumber" />
+                <ScalarProperty Name="prGroup" ColumnName="prGroup" />
+                <ScalarProperty Name="prShortName" ColumnName="prShortName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="statistics">
+            <EntityTypeMapping TypeName="inventoryBaseModel.statistics">
+              <MappingFragment StoreEntitySet="statistics">
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="suppliers">
+            <EntityTypeMapping TypeName="inventoryBaseModel.suppliers">
+              <MappingFragment StoreEntitySet="suppliers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="importReg" ColumnName="importReg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="technical">
+            <EntityTypeMapping TypeName="inventoryBaseModel.technical">
+              <MappingFragment StoreEntitySet="technical">
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="inventoryBaseModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="usrLvl" ColumnName="usrLvl" />
+                <ScalarProperty Name="usrName" ColumnName="usrName" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
