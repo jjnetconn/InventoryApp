@@ -20,8 +20,14 @@ namespace LagerMan_v2
        
         public MainForm()
         {
+
             InitializeComponent();
             baseDB = new inventoryBaseEntities();
+
+            //listen to events and do stuff
+            AppCore _AppCore = new AppCore();
+            _AppCore.excelEvent += new ExcelEventHandler(showLoadDone);
+            
             try
             {
                 baseDB.Database.Connection.Open();
@@ -32,6 +38,11 @@ namespace LagerMan_v2
                 log.writeError(ex.Message, ex.StackTrace);
             }
 
+        }
+
+        private void showLoadDone(EventArgs ea)
+        {
+            MessageBox.Show(ea.ToString());
         }
 
         private void startWorker(string fileName, string panelMfg)

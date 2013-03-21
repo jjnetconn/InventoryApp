@@ -9,8 +9,12 @@ using System.Diagnostics;
 
 namespace LagerMan_v2
 {
+    public delegate void ExcelEventHandler(string eventText);
+
     class AppCore
     {
+        public event ExcelEventHandler excelEvent;
+        
         public void dbLoadExcel(List<DataSet> excelList, int startRow, int cnameRow, int cnameCol, string mfgBy)
         {
             Stopwatch queryTimer = new Stopwatch();
@@ -56,8 +60,8 @@ namespace LagerMan_v2
 
                                     ivb.panels.Add(p);
                                     ivb.SaveChanges();
-                                    
-                                    Console.WriteLine("" + i);
+
+                                    //Console.WriteLine("" + i);
                                 }
                                 else
                                 {
@@ -78,7 +82,15 @@ namespace LagerMan_v2
                     ivb.Dispose();
                 }
             }
+            
             queryTimer.Stop();
+
+            if (excelEvent != null)
+            {
+                ExcelEventHandler args = new ExcelEventHandler("Excel indlæsning færdig");
+                excelEvent(args);
+            }
+            
             Console.WriteLine("Execution time: " + queryTimer.Elapsed);
 
         }
