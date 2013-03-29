@@ -13,6 +13,9 @@ namespace LagerMan_v2
 {
     class AppService_ExcelImport
     {
+        public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
+        public event StatusUpdateHandler OnUpdateStatus;
+
         private Excel.Application oXL = null;
         private Excel.Workbook oWB = null;
         
@@ -22,6 +25,8 @@ namespace LagerMan_v2
             
             try
             {
+                UpdateStatus("Excel indlæsning startet...");
+
                 //  creat a Application object
                 oXL = new Excel.Application();
                 //   get   WorkBook  object
@@ -48,7 +53,18 @@ namespace LagerMan_v2
                 }
                 releaseObject(ref oXL);
             }
+
+            UpdateStatus("Excel indlæsning afsluttet...");
             return excelWorkBook;
+        }
+
+        private void UpdateStatus(string status)
+        {
+            // Make sure someone is listening to event
+            if (OnUpdateStatus == null) return;
+
+            ProgressEventArgs args = new ProgressEventArgs(status);
+            OnUpdateStatus(this, args);
         }
 
         private DataSet GetExcelSheet(string fileName, int sheetNo, Excel.Application oXL, Excel.Workbook oWB)

@@ -14,20 +14,22 @@ namespace LagerMan_v2
 {
     public partial class MainForm : Form
     {
+        private AppCore _appCore;
+        private AppService_ExcelImport _appServiceExcel;
         Thread workerThread;
         String FileName = "";
         inventoryBaseEntities baseDB;
        
         public MainForm()
         {
-
             InitializeComponent();
+            toolStripStatusLabel4.Text = "Klar";
             baseDB = new inventoryBaseEntities();
+            _appCore = new AppCore();
+            _appServiceExcel = new AppService_ExcelImport();
+            _appCore.OnUpdateStatus += new AppCore.StatusUpdateHandler(ShowLoadDBUpdate);
+            _appServiceExcel.OnUpdateStatus += new AppService_ExcelImport.StatusUpdateHandler(ShowLoadExcelUpdate);
 
-            //listen to events and do stuff
-            AppCore _AppCore = new AppCore();
-            _AppCore.excelEvent += new ExcelEventHandler(showLoadDone);
-            
             try
             {
                 baseDB.Database.Connection.Open();
@@ -36,13 +38,26 @@ namespace LagerMan_v2
             {
                 AppEventLogger log = new AppEventLogger();
                 log.writeError(ex.Message, ex.StackTrace);
+                if (MessageBox.Show("Fejl i forbindelse til databasen! Se eventuelt eventlog", "Fejl", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    Application.Exit();
+                }
             }
-
         }
 
-        private void showLoadDone(EventArgs ea)
+        private void ShowLoadDBUpdate(object sender, ProgressEventArgs e)
         {
-            MessageBox.Show(ea.ToString());
+            SetStatus(e.Status);
+        }
+
+        private void ShowLoadExcelUpdate(object sender, ProgressEventArgs e)
+        {
+            SetStatus(e.Status);
+        }
+
+        private void SetStatus(string status)
+        {
+            toolStripStatusLabel4.Text = status;
         }
 
         private void startWorker(string fileName, string panelMfg)
@@ -59,13 +74,10 @@ namespace LagerMan_v2
             }
         }
 
-
         private void loadExcel(string panelMfg){
-            AppService_ExcelImport getExcel = new AppService_ExcelImport();
-            AppCore core = new AppCore();
             switch (panelMfg)
             {
-                case "Sunpower": core.dbLoadExcel(getExcel.GetExcel(FileName), Properties.Settings.Default.SP_StartRow, Properties.Settings.Default.SP_cNameRow, Properties.Settings.Default.SP_cNameCol, Properties.Settings.Default.SP_mfgBy); break;
+                case "Sunpower": _appCore.dbLoadExcel(_appServiceExcel.GetExcel(FileName), Properties.Settings.Default.SP_StartRow, Properties.Settings.Default.SP_cNameRow, Properties.Settings.Default.SP_cNameCol, Properties.Settings.Default.SP_mfgBy); break;
                 default: break;
             }
         }

@@ -9,16 +9,16 @@ using System.Diagnostics;
 
 namespace LagerMan_v2
 {
-    public delegate void ExcelEventHandler(string eventText);
-
     class AppCore
     {
-        public event ExcelEventHandler excelEvent;
+        public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
+        public event StatusUpdateHandler OnUpdateStatus;
         
         public void dbLoadExcel(List<DataSet> excelList, int startRow, int cnameRow, int cnameCol, string mfgBy)
         {
             Stopwatch queryTimer = new Stopwatch();
             queryTimer.Start();
+            UpdateStatus("Indlæser Excel data");
 
             using (inventoryBaseEntities ivb = new inventoryBaseEntities())
             {
@@ -85,14 +85,22 @@ namespace LagerMan_v2
             
             queryTimer.Stop();
 
-            if (excelEvent != null)
-            {
-                ExcelEventHandler args = new ExcelEventHandler("Excel indlæsning færdig");
-                excelEvent(args);
-            }
-            
-            Console.WriteLine("Execution time: " + queryTimer.Elapsed);
+            UpdateStatus("Excel data indlæst");
 
+            AppEventLogger logQuery = new AppEventLogger();
+            logQuery.writeInfo("Execution time: " + queryTimer.Elapsed);
+
+            UpdateStatus("Klar");
+
+        }
+
+        private void UpdateStatus(string status)
+        {
+            // Make sure someone is listening to event
+            if (OnUpdateStatus == null) return;
+
+            ProgressEventArgs args = new ProgressEventArgs(status);
+            OnUpdateStatus(this, args);
         }
 
         public void findProductNr(string barcode)
@@ -148,7 +156,6 @@ namespace LagerMan_v2
             {
 
             }
-
             return prodGrp;
         }
 
