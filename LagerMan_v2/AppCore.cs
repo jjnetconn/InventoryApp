@@ -96,9 +96,12 @@ namespace LagerMan_v2
             {
                 try
                 {
-                    foreach (DataSet ds in excelList)
-                    {
-                        if(!ds.Tables[0].Rows[0].ItemArray[0].Equals(null)){
+                    DataSet ds = excelList[0];
+                    //foreach (DataSet ds in excelList)
+                    //{
+                    //if (ds.Tables[0].Rows.Count < 2 || ds.Tables[0].Columns.Count < 2)
+                    //if (!ds.Tables[0].Rows[cnameRow].ItemArray[cnameCol].Equals(null))
+                        {
                         string[] cName = (ds.Tables[0].Rows[cnameRow].ItemArray[cnameCol]).ToString().Split(' ');
                         string prShortName = cName[0] + " " + cName[1];
                         for (int i = startRow; i < ds.Tables[0].Rows.Count; i++)
@@ -156,7 +159,7 @@ namespace LagerMan_v2
                             }
                             }
                         }
-                    }
+                    //}
                     //Commit all panels to DB
                     ivb.SaveChanges();
                 }
