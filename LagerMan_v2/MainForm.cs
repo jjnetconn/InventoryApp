@@ -16,10 +16,11 @@ namespace LagerMan_v2
     {
         private AppCore _appCore;
         private AppService_ExcelImport _appServiceExcel;
-        Thread workerThread;
+        private AppEventLogger _appEventlog;
+        Thread workerThread = null;
         String FileName = "";
         inventoryBaseEntities baseDB;
-       
+
         public MainForm()
         {
             InitializeComponent();
@@ -29,6 +30,9 @@ namespace LagerMan_v2
             _appServiceExcel = new AppService_ExcelImport();
             _appCore.OnUpdateStatus += new AppCore.StatusUpdateHandler(ShowLoadDBUpdate);
             _appServiceExcel.OnUpdateStatus += new AppService_ExcelImport.StatusUpdateHandler(ShowLoadExcelUpdate);
+            _appEventlog = new AppEventLogger();
+
+            tabControl1.SelectedIndex = 1;
 
             try
             {
@@ -36,13 +40,21 @@ namespace LagerMan_v2
             }
             catch (Exception ex)
             {
-                AppEventLogger log = new AppEventLogger();
-                log.writeError(ex.Message, ex.StackTrace);
-                if (MessageBox.Show("Fejl i forbindelse til databasen! Se eventuelt eventlog", "Fejl", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                {
-                    Application.Exit();
-                }
+                _appEventlog.writeError(ex.Message, ex.StackTrace);
+                MessageBox.Show("Fejl i forbindelse til databasen! Se eventuelt eventlog", "Fejl", MessageBoxButtons.OK);
+                System.Threading.Thread.Sleep(2000);   
+                EndApplication();
             }
+
+            //Preloading suppliers and productCatalog to Dictonaries in _appCore
+            _appCore.preloadSuppliers();
+            _appCore.preloadProducCatalog();
+        }
+
+        private void EndApplication()
+        {
+            Application.ExitThread();
+            Application.Exit();
         }
 
         private void ShowLoadDBUpdate(object sender, ProgressEventArgs e)
@@ -77,7 +89,7 @@ namespace LagerMan_v2
         private void loadExcel(string panelMfg){
             switch (panelMfg)
             {
-                case "Sunpower": _appCore.dbLoadExcel(_appServiceExcel.GetExcel(FileName), Properties.Settings.Default.SP_StartRow, Properties.Settings.Default.SP_cNameRow, Properties.Settings.Default.SP_cNameCol, Properties.Settings.Default.SP_mfgBy); break;
+                case "Sunpower": _appCore.dbLoadExcel(_appServiceExcel.GetExcel(FileName)); break;
                 default: break;
             }
         }
@@ -97,18 +109,40 @@ namespace LagerMan_v2
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                try
+                if (openFileDialog1.FileNames.Length > 1 && openFileDialog1.Multiselect)
                 {
-                    if ((xlsStream = openFileDialog1.OpenFile()) != null)
+                    foreach (string fileName in openFileDialog1.FileNames)
                     {
-                        startWorker(openFileDialog1.FileName, panelMfg);
+                        try
+                        {
+                            do
+                            {
+                                xlsStream = File.Open(fileName, FileMode.Open, FileAccess.Read);
+                                startWorker(fileName, panelMfg);
+                                xlsStream.Close();
+                            }
+                            while (!workerThread.IsAlive);
+                        }
+                        catch (Exception ex)
+                        {
+                            _appEventlog.writeError(ex.Message, ex.StackTrace);
+                        }
                     }
-                    xlsStream.Close();
                 }
-                catch(Exception ex)
+                else
                 {
-                    AppEventLogger log = new AppEventLogger();
-                    log.writeError(ex.Message, ex.StackTrace);
+                    try
+                    {
+                        if ((xlsStream = openFileDialog1.OpenFile()) != null)
+                        {
+                            startWorker(openFileDialog1.FileName, panelMfg);
+                        }
+                        xlsStream.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        _appEventlog.writeError(ex.Message, ex.StackTrace);
+                    }
                 }
             }
         }
@@ -137,6 +171,11 @@ namespace LagerMan_v2
                     textBox6.Select();
                 }
             }
+        }
+
+        private void aflustToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EndApplication();
         }
 
        /* private void textBox1_KeyDown(object sender, KeyEventArgs e)

@@ -32,5 +32,20 @@
     <Setting Name="invertersTable" Type="System.String" Scope="Application">
       <Value Profile="(Default)">inverters</Value>
     </Setting>
+    <Setting Name="debug" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AG_StartRow" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="AG_cNameCol" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="AG_cNameRow" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="AG_mfgBy" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Algatec</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using Marshal = System.Runtime.InteropServices.Marshal;
 using System.Reflection;
+using System.Diagnostics;
 
 
 namespace LagerMan_v2
@@ -15,17 +16,21 @@ namespace LagerMan_v2
     {
         public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
         public event StatusUpdateHandler OnUpdateStatus;
-
+        private AppEventLogger _appEventlog = new AppEventLogger();
         private Excel.Application oXL = null;
         private Excel.Workbook oWB = null;
         
         public List<DataSet> GetExcel(string fileName)
         {
             List<DataSet> excelWorkBook = new List<DataSet>();
-            
-            try
+            Stopwatch queryTimer = new Stopwatch();
+            if (Properties.Settings.Default.debug)
             {
-                UpdateStatus("Excel indlæsning startet...");
+                queryTimer.Start();
+            }
+            try
+            {    
+                UpdateStatus("Excel indlæsning startet");
 
                 //  creat a Application object
                 oXL = new Excel.Application();
@@ -41,8 +46,7 @@ namespace LagerMan_v2
             }
             catch (Exception ex)
             {
-                AppEventLogger log = new AppEventLogger();
-                log.writeError(ex.Message, ex.StackTrace);
+                _appEventlog.writeError(ex.Message, ex.StackTrace);
             }
             finally
             {
@@ -53,8 +57,11 @@ namespace LagerMan_v2
                 }
                 releaseObject(ref oXL);
             }
-
-            UpdateStatus("Excel indlæsning afsluttet...");
+            if (Properties.Settings.Default.debug)
+            {
+                queryTimer.Stop();
+                _appEventlog.writeInfo("Indlæsning af Excelark tog: " + queryTimer.Elapsed.ToString());
+            }
             return excelWorkBook;
         }
 
@@ -74,6 +81,11 @@ namespace LagerMan_v2
 
             Excel.Worksheet oSheet = null;
             Excel.Range oRng = null;
+
+            Stopwatch queryTimer = new Stopwatch();
+            if (Properties.Settings.Default.debug){
+                queryTimer.Start();
+            }
             try
             {
                 //   get   WorkSheet object 
@@ -89,11 +101,6 @@ namespace LagerMan_v2
                 {
                     dt.Columns.Add("column" + j, System.Type.GetType("System.String"));
                 }
-
-
-                //string colString = sb.ToString().Trim();
-                //string[] colArray = colString.Split(':');
-
 
                 //  get data in cell
                 for (int i = 1; i <= iValue; i++)
@@ -117,8 +124,14 @@ namespace LagerMan_v2
             }
             catch (Exception ex)
             {
-                AppEventLogger log = new AppEventLogger();
-                log.writeError(ex.Message, ex.StackTrace);
+                _appEventlog.writeError(ex.Message, ex.StackTrace);
+            }
+
+            UpdateStatus("Excel indlæsning afsluttet");
+            if (Properties.Settings.Default.debug)
+            {
+                queryTimer.Stop();
+                _appEventlog.writeInfo("Indlæsning af Exceldata tog: " + queryTimer.Elapsed.ToString());
             }
             return ds;
         }

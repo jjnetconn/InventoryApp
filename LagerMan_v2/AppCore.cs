@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Data;
-using System.Globalization;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace LagerMan_v2
 {
@@ -13,13 +14,179 @@ namespace LagerMan_v2
     {
         public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
         public event StatusUpdateHandler OnUpdateStatus;
-        
-        public void dbLoadExcel(List<DataSet> excelList, int startRow, int cnameRow, int cnameCol, string mfgBy)
+        private AppEventLogger _appEventlog = new AppEventLogger();
+        public Dictionary<string, int> PreloadedSuppliers { get; set; }
+        public Dictionary<string, int> PreloadedProductCatalog { get; set; }
+
+        public void preloadSuppliers()
+        {
+            Dictionary<string, int> _preSuppilers = new Dictionary<string, int>();
+
+            using (inventoryBaseEntities ivb = new inventoryBaseEntities())
+            {
+                try
+                {
+                    var query = (from q in ivb.suppliers
+                                 select q);
+
+                    foreach (suppliers itm in query)
+                    {
+                        _preSuppilers.Add(itm.name, itm.id);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _appEventlog.writeError(ex.Message, ex.StackTrace);
+                }
+            }
+            
+            PreloadedSuppliers = _preSuppilers;
+        }
+
+        public void preloadProducCatalog()
+        {
+            Dictionary<string, int> _preProductCatalog = new Dictionary<string, int>();
+
+            using (inventoryBaseEntities ivb = new inventoryBaseEntities())
+            {
+                try
+                {
+                    var query = (from q in ivb.productCatalog
+                                 select q);
+
+                    foreach (productCatalog itm in query)
+                    {
+                        if (!itm.prShortName.Equals(null))
+                        {
+                            _preProductCatalog.Add(itm.prShortName, (int)itm.prNumber);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _appEventlog.writeError(ex.Message, ex.StackTrace);
+                }
+            }
+
+            PreloadedProductCatalog = _preProductCatalog;
+        }
+
+        public void dbLoadExcel(List<DataSet> excelList)
+        {
+            if (excelList[0].Tables[0].Rows[1].ItemArray[2].ToString().Contains("ASM"))
+            {
+                loadAlgatec(excelList, Properties.Settings.Default.AG_StartRow, Properties.Settings.Default.AG_cNameRow, Properties.Settings.Default.AG_cNameCol, Properties.Settings.Default.AG_mfgBy);
+            }
+            else
+            {
+                loadSunpower(excelList, Properties.Settings.Default.SP_StartRow, Properties.Settings.Default.SP_cNameRow, Properties.Settings.Default.SP_cNameCol, Properties.Settings.Default.SP_mfgBy);
+            }
+
+        }
+
+        public void loadAlgatec(List<DataSet> excelList, int startRow, int cnameRow, int cnameCol, string mfgBy)
         {
             Stopwatch queryTimer = new Stopwatch();
-            queryTimer.Start();
-            UpdateStatus("Indlæser Excel data");
+            if (Properties.Settings.Default.debug)
+            {
+                queryTimer.Start();
+            }
+            UpdateStatus("Indlæser til Database");
+            using (inventoryBaseEntities ivb = new inventoryBaseEntities())
+            {
+                try
+                {
+                    foreach (DataSet ds in excelList)
+                    {
+                        if(!ds.Tables[0].Rows[0].ItemArray[0].Equals(null)){
+                        string[] cName = (ds.Tables[0].Rows[cnameRow].ItemArray[cnameCol]).ToString().Split(' ');
+                        string prShortName = cName[0] + " " + cName[1];
+                        for (int i = startRow; i < ds.Tables[0].Rows.Count; i++)
+                        {
+                            if (((String)ds.Tables[0].Rows[i].ItemArray[0]).Length > 2)
+                            {
+                                string testSerial = (string)ds.Tables[0].Rows[i].ItemArray[0];
+                                var query = (from q in ivb.panels
+                                             where q.panelSerial.Equals(testSerial)
+                                             select q.panelSerial);
+                                if (query.Count() < 1)
+                                {
+                                    if (Properties.Settings.Default.debug)
+                                    {
+                                        _appEventlog.writeInfo("Opslag efter producent og produkt nr.: " + queryTimer.Elapsed.ToString());
+                                        queryTimer.Reset();
 
+                                        queryTimer.Start();
+                                    }
+                                    panels p = new panels();
+                                    p.panelSupplier = (from q in PreloadedSuppliers where q.Key.Contains(mfgBy) select q).First().Value;
+                                    p.panelCname = cName[0];
+                                    p.prodNo = (from q in PreloadedProductCatalog where q.Key.Contains(prShortName) select q).First().Value;
+                                    p.panelSerial = (string)ds.Tables[0].Rows[i].ItemArray[1];
+                                    p.panelMFGDate = DateTime.Parse(ds.Tables[0].Rows[i].ItemArray[2].ToString(), CultureInfo.CurrentCulture);
+                                    p.panelCellclass = Double.Parse(ds.Tables[0].Rows[i].ItemArray[3].ToString(), CultureInfo.CurrentCulture);
+                                    p.panelEff = Double.Parse(ds.Tables[0].Rows[i].ItemArray[6].ToString(), CultureInfo.CurrentCulture);
+                                    p.panelVmp = Double.Parse(ds.Tables[0].Rows[i].ItemArray[9].ToString(), CultureInfo.CurrentCulture);
+                                    p.panelVoc = Double.Parse(ds.Tables[0].Rows[i].ItemArray[4].ToString(), CultureInfo.CurrentCulture);
+                                    p.panelImp = Double.Parse(ds.Tables[0].Rows[i].ItemArray[10].ToString(), CultureInfo.CurrentCulture);
+                                    p.panelIsc = Double.Parse(ds.Tables[0].Rows[i].ItemArray[5].ToString(), CultureInfo.CurrentCulture);
+                                    p.panelFf = Double.Parse(ds.Tables[0].Rows[i].ItemArray[8].ToString(), CultureInfo.CurrentCulture);
+                                    ivb.panels.Add(p);
+
+                                    if (Properties.Settings.Default.debug)
+                                    {
+                                        queryTimer.Stop();
+                                        _appEventlog.writeInfo("Oprettelse af panel i dataset " + queryTimer.Elapsed.ToString());
+                                        queryTimer.Reset();
+                                    }
+                                }
+                                else
+                                {
+                                    _appEventlog.writeWarning("Panel med serie nr.: " +
+                                        (string)ds.Tables[0].Rows[i].ItemArray[0].ToString() +
+                                        " findes allerede i databasen (dobbelt indlæsning)");
+
+                                    if (Properties.Settings.Default.debug)
+                                    {
+                                        Console.WriteLine("Panel med serie nr.: " +
+                                        (string)ds.Tables[0].Rows[i].ItemArray[0].ToString() +
+                                        " findes allerede i databasen (dobbelt indlæsning)");
+                                    }
+                                }
+                            }
+                            }
+                        }
+                    }
+                    //Commit all panels to DB
+                    ivb.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    _appEventlog.writeError(ex.Message, ex.StackTrace);
+                }
+                finally
+                {
+                    if (Properties.Settings.Default.debug)
+                    {
+                        queryTimer.Stop();
+                        UpdateStatus("Indlæst til database");
+                        _appEventlog.writeInfo("Database indlæsning tog: " + queryTimer.Elapsed.ToString());
+                        UpdateStatus("Klar");
+                    }
+                    //Disposeing database entity
+                    ivb.Dispose();
+                }
+            }
+        }
+
+        public void loadSunpower(List<DataSet> excelList, int startRow, int cnameRow, int cnameCol, string mfgBy)
+        {
+            Stopwatch queryTimer = new Stopwatch();
+            if (Properties.Settings.Default.debug)
+            {
+                queryTimer.Start();
+            }
+            UpdateStatus("Indlæser til Database");
             using (inventoryBaseEntities ivb = new inventoryBaseEntities())
             {
                 try
@@ -38,18 +205,17 @@ namespace LagerMan_v2
                                              select q.panelSerial);
                                 if (query.Count() < 1)
                                 {
-                                    var query2 = (from q in ivb.suppliers
-                                                  where q.name.Equals(mfgBy)
-                                                  select q.id).FirstOrDefault();
-                                    var query3 = (from q in ivb.productCatalog
-                                                  where q.prShortName.Equals(prShortName)
-                                                  select q.prNumber).FirstOrDefault();
+                                    if (Properties.Settings.Default.debug)
+                                    {
+                                        _appEventlog.writeInfo("Opslag efter producent og produkt nr.: " + queryTimer.Elapsed.ToString());
+                                        queryTimer.Reset();
 
+                                        queryTimer.Start();
+                                    }
                                     panels p = new panels();
-
-                                    p.panelSupplier = (int)query2;
+                                    p.panelSupplier = (from q in PreloadedSuppliers where q.Key.Contains(mfgBy) select q).First().Value;
                                     p.panelCname = cName[0];
-                                    p.prodNo = (int)query3;
+                                    p.prodNo = (from q in PreloadedProductCatalog where q.Key.Contains(prShortName) select q).First().Value;
                                     p.panelSerial = (string)ds.Tables[0].Rows[i].ItemArray[0];
                                     p.panelEff = Double.Parse(ds.Tables[0].Rows[i].ItemArray[3].ToString(), CultureInfo.CurrentCulture);
                                     p.panelVmp = Double.Parse(ds.Tables[0].Rows[i].ItemArray[4].ToString(), CultureInfo.CurrentCulture);
@@ -57,41 +223,51 @@ namespace LagerMan_v2
                                     p.panelImp = Double.Parse(ds.Tables[0].Rows[i].ItemArray[6].ToString(), CultureInfo.CurrentCulture);
                                     p.panelIsc = Double.Parse(ds.Tables[0].Rows[i].ItemArray[7].ToString(), CultureInfo.CurrentCulture);
                                     p.panelFf = Double.Parse(ds.Tables[0].Rows[i].ItemArray[8].ToString(), CultureInfo.CurrentCulture);
-
                                     ivb.panels.Add(p);
-                                    ivb.SaveChanges();
 
-                                    //Console.WriteLine("" + i);
+                                    if (Properties.Settings.Default.debug)
+                                    {
+                                        queryTimer.Stop();
+                                        _appEventlog.writeInfo("Oprettelse af panel i dataset " + queryTimer.Elapsed.ToString());
+                                        queryTimer.Reset();
+                                    }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("panel is already in DB");
-                                }
+                                    _appEventlog.writeWarning("Panel med serie nr.: " +
+                                        (string)ds.Tables[0].Rows[i].ItemArray[0].ToString() +
+                                        " findes allerede i databasen (dobbelt indlæsning)");
 
+                                    if (Properties.Settings.Default.debug)
+                                    {
+                                        Console.WriteLine("Panel med serie nr.: " +
+                                        (string)ds.Tables[0].Rows[i].ItemArray[0].ToString() +
+                                        " findes allerede i databasen (dobbelt indlæsning)");
+                                    }
+                                }
                             }
                         }
                     }
+                    //Commit all panels to DB
+                    ivb.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    AppEventLogger log = new AppEventLogger();
-                    log.writeError(ex.Message, ex.StackTrace);
+                    _appEventlog.writeError(ex.Message, ex.StackTrace);
                 }
                 finally
                 {
+                    if (Properties.Settings.Default.debug)
+                    {
+                        queryTimer.Stop();
+                        UpdateStatus("Indlæst til database");
+                        _appEventlog.writeInfo("Database indlæsning tog: " + queryTimer.Elapsed.ToString());
+                        UpdateStatus("Klar");
+                    }
+                    //Disposeing database entity
                     ivb.Dispose();
                 }
             }
-            
-            queryTimer.Stop();
-
-            UpdateStatus("Excel data indlæst");
-
-            AppEventLogger logQuery = new AppEventLogger();
-            logQuery.writeInfo("Execution time: " + queryTimer.Elapsed);
-
-            UpdateStatus("Klar");
-
         }
 
         private void UpdateStatus(string status)
