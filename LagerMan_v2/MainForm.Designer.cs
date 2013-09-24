@@ -39,6 +39,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBox15 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -74,22 +76,45 @@
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
+            this.label21 = new System.Windows.Forms.Label();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label20 = new System.Windows.Forms.Label();
+            this.textBox17 = new System.Windows.Forms.TextBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBox16 = new System.Windows.Forms.TextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label22 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            this.tabPage4.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -155,6 +180,10 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.tabPage1.Controls.Add(this.label23);
+            this.tabPage1.Controls.Add(this.panel2);
+            this.tabPage1.Controls.Add(this.label22);
+            this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -213,6 +242,23 @@
             this.tabPage5.Size = new System.Drawing.Size(464, 193);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Privat kunde";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(19, 140);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(31, 13);
+            this.label16.TabIndex = 23;
+            this.label16.Text = "Land";
+            // 
+            // textBox15
+            // 
+            this.textBox15.Location = new System.Drawing.Point(22, 156);
+            this.textBox15.Name = "textBox15";
+            this.textBox15.Size = new System.Drawing.Size(175, 20);
+            this.textBox15.TabIndex = 22;
+            this.textBox15.Text = "Danmark";
             // 
             // label8
             // 
@@ -511,6 +557,13 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.tabPage3.Controls.Add(this.button6);
+            this.tabPage3.Controls.Add(this.label21);
+            this.tabPage3.Controls.Add(this.dataGridView3);
+            this.tabPage3.Controls.Add(this.button5);
+            this.tabPage3.Controls.Add(this.label20);
+            this.tabPage3.Controls.Add(this.textBox17);
+            this.tabPage3.Controls.Add(this.button7);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -518,9 +571,78 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Tilføj til lager";
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(30, 178);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(126, 39);
+            this.button6.TabIndex = 110;
+            this.button6.Text = "Send til lager";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(537, 24);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(80, 13);
+            this.label21.TabIndex = 109;
+            this.label21.Text = "Scannede vare";
+            // 
+            // dataGridView3
+            // 
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.Location = new System.Drawing.Point(537, 43);
+            this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.Size = new System.Drawing.Size(519, 560);
+            this.dataGridView3.TabIndex = 108;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(30, 133);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(126, 39);
+            this.button5.TabIndex = 107;
+            this.button5.Text = "Slet sidste";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(30, 24);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(56, 13);
+            this.label20.TabIndex = 103;
+            this.label20.Text = "Stregkode";
+            // 
+            // textBox17
+            // 
+            this.textBox17.Location = new System.Drawing.Point(30, 43);
+            this.textBox17.Name = "textBox17";
+            this.textBox17.Size = new System.Drawing.Size(269, 20);
+            this.textBox17.TabIndex = 104;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(30, 88);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(126, 39);
+            this.button7.TabIndex = 105;
+            this.button7.Text = "Tilføj";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.tabPage4.Controls.Add(this.button9);
+            this.tabPage4.Controls.Add(this.button8);
+            this.tabPage4.Controls.Add(this.label19);
+            this.tabPage4.Controls.Add(this.label18);
+            this.tabPage4.Controls.Add(this.textBox16);
+            this.tabPage4.Controls.Add(this.comboBox1);
+            this.tabPage4.Controls.Add(this.button4);
+            this.tabPage4.Controls.Add(this.label17);
+            this.tabPage4.Controls.Add(this.dataGridView2);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -565,22 +687,114 @@
             this.toolStripStatusLabel4.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel4.Text = "toolStripStatusLabel4";
             // 
-            // textBox15
+            // label19
             // 
-            this.textBox15.Location = new System.Drawing.Point(22, 156);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(175, 20);
-            this.textBox15.TabIndex = 22;
-            this.textBox15.Text = "Danmark";
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(24, 65);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 13);
+            this.label19.TabIndex = 13;
+            this.label19.Text = "Søge ord:";
             // 
-            // label16
+            // label18
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(19, 140);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(31, 13);
-            this.label16.TabIndex = 23;
-            this.label16.Text = "Land";
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(24, 18);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(53, 13);
+            this.label18.TabIndex = 12;
+            this.label18.Text = "Søg efter:";
+            // 
+            // textBox16
+            // 
+            this.textBox16.Location = new System.Drawing.Point(24, 81);
+            this.textBox16.Name = "textBox16";
+            this.textBox16.Size = new System.Drawing.Size(208, 20);
+            this.textBox16.TabIndex = 11;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(24, 37);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 10;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(24, 116);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "Søg";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(543, 17);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(46, 13);
+            this.label17.TabIndex = 8;
+            this.label17.Text = "Resultat";
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(543, 36);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(517, 289);
+            this.dataGridView2.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(41, 48);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(470, 233);
+            this.panel1.TabIndex = 0;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(41, 29);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(65, 13);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "Lager status";
+            // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(41, 313);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(470, 259);
+            this.panel2.TabIndex = 2;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(41, 294);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(60, 13);
+            this.label23.TabIndex = 3;
+            this.label23.Text = "Lager facts";
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(24, 285);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 40);
+            this.button8.TabIndex = 14;
+            this.button8.Text = "Hent ordre";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(122, 285);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 40);
+            this.button9.TabIndex = 15;
+            this.button9.Text = "Hent Flash data";
+            this.button9.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -597,6 +811,8 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabControl2.ResumeLayout(false);
@@ -605,8 +821,14 @@
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -668,6 +890,26 @@
         private System.Windows.Forms.ToolStripMenuItem aflustToolStripMenuItem;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox textBox15;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.DataGridView dataGridView3;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox textBox17;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox16;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button8;
     }
 }
 

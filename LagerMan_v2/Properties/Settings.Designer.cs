@@ -157,16 +157,5 @@ namespace LagerMan_v2.Properties {
                 return ((string)(this["AG_mfgBy"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("User Id=jj;password=buDs7Cs!;server=solcellespecialisten.cnwfj8va3xp9.eu-west-1.r" +
-            "ds.amazonaws.com;database=inventoryBase")]
-        public string inventoryBaseConnectionString {
-            get {
-                return ((string)(this["inventoryBaseConnectionString"]));
-            }
-        }
     }
 }
